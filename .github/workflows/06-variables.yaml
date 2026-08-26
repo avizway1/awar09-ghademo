@@ -1,0 +1,17 @@
+name: 06 varaibles example
+
+on: workflow_dispatch
+
+env:
+    NAME: Avinash
+
+jobs:
+    myfirstjob:
+        runs-on: ubuntu-latest
+        env:
+            GREETING: Hello
+        steps:
+            - name: Print my name
+              env:
+                COURSE: GHA
+              run: echo "$GREETING, Am $NAME and Am learning $COURSE"
