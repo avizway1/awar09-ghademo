@@ -1,0 +1,20 @@
+name: 04 - Matrix example with nodejs version
+
+on:
+    push:
+        branches: ["*"]
+
+jobs:
+    node-setup:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                node: [22,24,26]
+        steps:
+            - uses: actions/checkout@v7
+            - uses: actions/setup-node@v7
+              with:
+                node-version: ${{ matrix.node }}
+            - run: npm install
+            - run: node index.js
+            - run: node -v
