@@ -1,0 +1,20 @@
+{
+  "name": "aviz-academy-gha-demo",
+  "version": "1.0.0",
+  "description": "Aviz Academy - GitHub Actions + Node.js demo app",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "aviz-academy",
+    "github-actions",
+    "nodejs",
+    "demo"
+  ],
+  "author": "Avinash (Aviz Academy)",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  }
+}
