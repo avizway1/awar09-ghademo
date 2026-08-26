@@ -1,0 +1,18 @@
+name: 01-my first gha job
+
+on:
+    push:
+        branches: [main, master, feature]
+    pull_request:
+        branches: [main]
+    workflow_dispatch:
+jobs:
+    printmyjob:
+        runs-on: ubuntu-latest
+        steps:
+            - name: run single command
+              run: echo "Welcome to GHA Class"
+            - name: run multiple commands
+              run: |
+                echo "hello from AVinash"
+                echo "You are learning GHA"
