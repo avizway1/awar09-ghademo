@@ -15,3 +15,7 @@ jobs:
               env:
                 COURSE: GHA
               run: echo "$GREETING, Am $NAME and Am learning $COURSE"
+            - name: print the varibales from github context variables
+              run: echo "My github Repo name is ${{ github.repository }} and owner of this repo is ${{ github.repository_owner }} and the actor is ${{ github.actor }}"
+            - name: print configuration variables
+              run: echo "my project name is ${{ vars.PROJECT_NAME }}"
