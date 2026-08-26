@@ -20,7 +20,7 @@ function banner() {
 }
 
 function greet(name = "Learner") {
-  return `Welcome to ${BRAND}, ${name}!`;
+  return `Welcome to my ${BRAND}, ${name}!`;
 }
 
 function runnerInfo() {
