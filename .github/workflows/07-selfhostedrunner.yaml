@@ -13,4 +13,7 @@ jobs:
             - name: Run my applicaiton
               run: node index.js
             - name: use role and list buckets
-              run: aws s3 ls
+              run: |
+                aws s3 ls
+                mkdir test-gha
+                hostname
