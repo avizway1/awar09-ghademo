@@ -1,0 +1,16 @@
+name: 07 - testing selfhosted runner
+
+on:
+    push:
+        branches: ["*"]
+
+jobs:
+    node-setup:
+        runs-on: self-hosted
+        steps:
+            - name: checkout the code
+              uses: actions/checkout@v7
+            - name: Run my applicaiton
+              run: node index.js
+            - name: use role and list buckets
+              run: aws s3 ls
