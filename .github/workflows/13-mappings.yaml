@@ -1,0 +1,58 @@
+name: 13 - mapings and needs example
+
+on:
+    workflow_dispatch:
+        inputs:
+            environment:
+                description: 'Choose Target Environment to deploy'
+                required: true
+                type: choice
+                options: 
+                    - dev
+                    - uat
+                    - prod
+
+jobs:
+    pick-code:
+        runs-on: ubuntu-latest
+        steps:
+            - name: clone the repo
+              run: echo "Code cloned here in this step"
+
+    build:
+        needs: [pick-code]
+        runs-on: ubuntu-latest
+        steps:
+            - name: build the code
+              run: echo "COde build completed here"
+
+    Testcode:
+        needs: [build]
+        runs-on: ubuntu-latest
+        steps:
+            - name: test the code
+              run: echo "Code tested here"
+
+    deploy-to-dev:
+        needs: [build, Testcode]
+        if: ${{ inputs.environment == 'dev' }}
+        runs-on: ubuntu-latest
+        steps:
+            - name: deploy to dev
+              run: echo "Code deployed to dev environment"
+
+    deploy-to-uat:
+        needs: [build, Testcode]
+        if: ${{ inputs.environment == 'uat' }}
+        runs-on: ubuntu-latest
+        steps:
+            - name: deploy to uat
+              run: echo "Code deployed to uat environment"
+
+    deploy-to-prd:
+        needs: [build, Testcode]
+        if: ${{ inputs.environment == 'prd' }}
+        runs-on: ubuntu-latest
+        steps:
+            - name: deploy to prd
+              run: echo "Code deployed to prd environment"
