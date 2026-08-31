@@ -1,0 +1,50 @@
+name: 12 - build and deploy image to ecr service
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+        - main
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+    ECR_REPO: avizghaecrapp
+    IMAGE_TAG: ${{ github.sha }}
+
+jobs:
+    push-to-ecr:
+        runs-on: ubuntu-latest
+        steps:
+            - name: checkout the code
+              uses: actions/checkout@v7
+
+            - name: Configure AWS OIDC Credentials
+              uses: aws-actions/configure-aws-credentials@v6.2.3
+              with:
+                aws-region: ${{ secrets.AWS_REGION }}
+                role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+
+            - name: Login to ECR service
+              id: login-ecr
+              uses: aws-actions/amazon-ecr-login@v2
+              with:
+                mask-password: 'true'
+            - name: Set ECR Registry ENv var
+              run: echo "ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}" >> $GITHUB_ENV
+
+            - name: build, tag and push to ecr repository
+              run: |
+                echo "Building Docker image"
+                docker build -t $ECR_REGISTRY/$ECR_REPO:$IMAGE_TAG .
+
+                echo "adding required tags"
+                docker tag $ECR_REGISTRY/$ECR_REPO:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPO:latest
+
+                echo "pushing Images"
+                docker push $ECR_REGISTRY/$ECR_REPO:$IMAGE_TAG
+                docker push $ECR_REGISTRY/$ECR_REPO:latest
+                echo "Done.. Image build and pushed"
+
