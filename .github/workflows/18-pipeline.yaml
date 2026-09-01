@@ -7,10 +7,10 @@ on:
 
 jobs:
     secrets-scan:
-        uses: ./.github/worflows/14-secrets-scan.yaml
+        uses: ./.github/workflows/14-secrets-scan.yaml
 
     dependency-scan:
-        uses: ./.github/worflows/15-dependency-scan.yaml
-        
+        uses: ./.github/workflows/15-dependency-scan.yaml
+
     codequality-scan:
-        uses: ./.github/worflows/17-codequality.yaml
+        uses: ./.github/workflows/17-codequality.yaml
