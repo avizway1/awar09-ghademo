@@ -1,0 +1,16 @@
+name: 18 - call other workflows
+
+on:
+    push:
+        branches: [main]
+    workflow_dispatch:
+
+jobs:
+    secrets-scan:
+        uses: ./.github/worflows/14-secrets-scan.yaml
+
+    dependency-scan:
+        uses: ./.github/worflows/15-dependency-scan.yaml
+        
+    codequality-scan:
+        uses: ./.github/worflows/17-codequality.yaml
