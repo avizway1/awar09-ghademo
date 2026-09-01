@@ -1,0 +1,34 @@
+name: 15 - dependency scan for python code with pip-audit
+
+on:
+    pull_request:
+    push:
+    workflow_dispatch:
+    schedule:
+        - cron: "00 12 * * *"
+
+jobs:
+    dependencyscan:
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                python-version: [3.18]
+
+        steps: 
+            - name: Checkout the code
+              uses: actions/checkout@v7
+
+            - name: setup python 3.18
+              uses: actions/setup-python@v7
+              with:
+                python-version: '3.18'
+
+            - name: Install pip-sudit
+              run: pip install pip-audit
+
+            - name: Audit Dependencies for CVE
+              run: pip-audit -r requirements.txt
+
+            - name: export result to json
+              run: pip-audit -f json
