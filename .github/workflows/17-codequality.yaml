@@ -1,0 +1,39 @@
+name: 17 - code quality check with flake, pytest and bandit
+
+on:
+    pull_request:
+    push:
+    workflow_dispatch:
+    schedule:
+        - cron: "00 12 * * *"
+
+jobs:
+    dependencyscan:
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                python-version: [3.12]
+
+        steps: 
+            - name: Checkout the code
+              uses: actions/checkout@v7
+
+            - name: setup python 3.12
+              uses: actions/setup-python@v7
+              with:
+                python-version: '3.12'
+
+            - name: Install dependencies and required tools
+              run: |
+                pip install -r requirements.txt
+                pip install flake8 pytest bandit
+
+            - name: run flake8 scan
+              run: flake8 app.py test_app.py
+
+            - name: run unit tests with pytest
+              run: pytest -v test_app.py
+
+            - name: run SAST (Satic Application Security testing) with bandit
+              run: bandit -r app.py

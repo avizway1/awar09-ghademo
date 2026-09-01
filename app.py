@@ -42,4 +42,6 @@ def info():
 
 if __name__ == "__main__":
     # Local development only; the container runs gunicorn instead.
-    app.run(host="127.0.0.1", port=8000, debug=True)
+    # Debugger stays off unless FLASK_DEBUG=1 is set explicitly.
+    debug = os.environ.get("FLASK_DEBUG", "0") == "1"
+    app.run(host="127.0.0.1", port=8000, debug=debug)
