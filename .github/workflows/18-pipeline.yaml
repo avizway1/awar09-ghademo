@@ -10,7 +10,9 @@ jobs:
         uses: ./.github/workflows/14-secrets-scan.yaml
 
     dependency-scan:
+        needs: [secrets-scan]
         uses: ./.github/workflows/15-dependency-scan.yaml
 
     codequality-scan:
+        needs: [secrets-scan, dependency-scan]
         uses: ./.github/workflows/17-codequality.yaml
