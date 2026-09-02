@@ -1,0 +1,39 @@
+name: 20 - Deploy to EKS Cluster
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+        - main
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+    aws-access:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Configure AWS OIDC Credentials
+              uses: aws-actions/configure-aws-credentials@v6.2.3
+              with:
+                aws-region: ${{ secrets.AWS_REGION }}
+                role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+                role-session-name: EKS-Deploy
+#Above assumed role should have valid access on EKS CLuster, also, it should have EKS readonly to update the kubeconfig
+            - name: checkout the code
+              uses: actions/checkout@v7
+
+            - name: Update kubeconfig to point my eks cluster
+              run: aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name ${{ secrets.EKS_CLUSTER_NAME }}
+
+            - name: verify eks nodes
+              run: kubectl get nodes
+
+            - name: apply workload using kubectl
+              run: kubectl apply -f k8s/ --namespace ${{ vars.EKS_NAMESPACE }}
+            
+            - name: Verify the workload deployment into eks
+              run: |
+                kubectl get pods --namespace ${{ vars.EKS_NAMESPACE }}
+                kubectl rollout status deployment --timeout=120s --namespace ${{ vars.EKS_NAMESPACE }}
