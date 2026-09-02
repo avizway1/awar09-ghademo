@@ -12,7 +12,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Configure AWS OIDC Credentials
-              uses: aws-actions/configure-aws-credentials@v6.2.3
+              uses: aws-actions/configure-aws-credentials@vcbe3b392738ccf3f987d68400dafcf4b0624a56c
               with:
                 aws-region: ${{ secrets.AWS_REGION }}
                 role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
